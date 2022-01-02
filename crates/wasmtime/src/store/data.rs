@@ -184,11 +184,14 @@ pub struct Stored<T> {
     /// 0 means null store
     store_id: u64,
     index: usize,
-    _marker: marker::PhantomData<fn() -> T>,
+    _marker: marker::PhantomData<*const T>,
 }
 
+unsafe impl<T> std::marker::Sync for Stored<T> {}
+unsafe impl<T> std::marker::Send for Stored<T> {}
+
 impl<T> Stored<T> {
-    fn new(store_id: u64, index: usize) -> Stored<T> {
+    const fn new(store_id: u64, index: usize) -> Stored<T> {
         Stored {
             store_id,
             index,
@@ -196,7 +199,7 @@ impl<T> Stored<T> {
         }
     }
 
-    pub fn null() -> Stored<T> {
+    pub const fn null() -> Stored<T> {
         Self::new(0, 0)
     }
 

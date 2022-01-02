@@ -442,7 +442,7 @@ impl Func {
     /// # Examples
     ///
     /// TODO
-    pub fn placeholder() -> Func {
+    pub const fn placeholder() -> Func {
         Func(Stored::null())
     }
 

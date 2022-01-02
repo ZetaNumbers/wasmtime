@@ -236,7 +236,7 @@ impl Memory {
     /// # Examples
     ///
     /// TODO
-    pub fn placeholder() -> Memory {
+    pub const fn placeholder() -> Memory {
         Memory(Stored::null())
     }
 

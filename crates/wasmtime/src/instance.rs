@@ -136,7 +136,7 @@ impl Instance {
 
     /// Creates a fake [`Instance`]. Used as a placeholder before
     /// assigning an actual [`Instance`], returned by [`Instance::new`].
-    pub fn placeholder() -> Instance {
+    pub const fn placeholder() -> Instance {
         Instance(Stored::null())
     }
 

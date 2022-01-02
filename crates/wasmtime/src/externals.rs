@@ -267,7 +267,7 @@ impl Global {
     /// # Examples
     ///
     /// TODO
-    pub fn placeholder() -> Global {
+    pub const fn placeholder() -> Global {
         Global(Stored::null())
     }
 
@@ -460,7 +460,7 @@ impl Table {
     /// # Examples
     ///
     /// TODO
-    pub fn placeholder() -> Table {
+    pub const fn placeholder() -> Table {
         Table(Stored::null())
     }
 
