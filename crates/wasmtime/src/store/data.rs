@@ -75,21 +75,21 @@ impl StoreData {
         let list = T::list_mut(self);
         let index = list.len();
         list.push(data);
-        Stored::new(self.id, index)
+        Stored::new(self.id.get(), index)
     }
 
     pub fn next_id<T>(&self) -> Stored<T>
     where
         T: StoredData,
     {
-        Stored::new(self.id, T::list(self).len())
+        Stored::new(self.id.get(), T::list(self).len())
     }
 
     pub fn contains<T>(&self, id: Stored<T>) -> bool
     where
         T: StoredData,
     {
-        if id.store_id() != self.id {
+        if id.store_id() != self.id.get() {
             return false;
         }
         // this should be true as an invariant of our API, but double-check with
@@ -110,7 +110,7 @@ where
     #[inline]
     fn index(&self, index: Stored<T>) -> &Self::Output {
         assert!(
-            index.store_id() == self.id,
+            index.store_id() == self.id.get(),
             "object used with the wrong store"
         );
         &T::list(self)[index.index()]
@@ -124,7 +124,7 @@ where
     #[inline]
     fn index_mut(&mut self, index: Stored<T>) -> &mut Self::Output {
         assert!(
-            index.store_id() == self.id,
+            index.store_id() == self.id.get(),
             "object used with the wrong store"
         );
         &mut T::list_mut(self)[index.index()]
@@ -181,13 +181,14 @@ where
 
 #[repr(C)] // used by reference in the C API
 pub struct Stored<T> {
-    store_id: NonZeroU64,
+    /// 0 means null store
+    store_id: u64,
     index: usize,
     _marker: marker::PhantomData<fn() -> T>,
 }
 
 impl<T> Stored<T> {
-    fn new(store_id: NonZeroU64, index: usize) -> Stored<T> {
+    fn new(store_id: u64, index: usize) -> Stored<T> {
         Stored {
             store_id,
             index,
@@ -195,7 +196,11 @@ impl<T> Stored<T> {
         }
     }
 
-    fn store_id(&self) -> NonZeroU64 {
+    pub fn null() -> Stored<T> {
+        Self::new(0, 0)
+    }
+
+    fn store_id(&self) -> u64 {
         self.store_id
     }
 

@@ -436,6 +436,16 @@ impl Func {
         })
     }
 
+    /// Creates a fake WebAssembly function. Used as a placeholder before
+    /// assigning an actual WebAssembly function.
+    ///
+    /// # Examples
+    ///
+    /// TODO
+    pub fn placeholder() -> Func {
+        Func(Stored::null())
+    }
+
     pub(crate) unsafe fn from_caller_checked_anyfunc(
         store: &mut StoreOpaque,
         raw: *mut VMCallerCheckedAnyfunc,

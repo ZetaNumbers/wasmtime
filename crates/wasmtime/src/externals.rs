@@ -261,6 +261,16 @@ impl Global {
         Global::_new(store.as_context_mut().0, ty, val)
     }
 
+    /// Creates a fake WebAssembly `global` value. Used as a placeholder before
+    /// assigning an actual WebAssembly `global` value, returned by [`Global::new`].
+    ///
+    /// # Examples
+    ///
+    /// TODO
+    pub fn placeholder() -> Global {
+        Global(Stored::null())
+    }
+
     fn _new(store: &mut StoreOpaque, ty: GlobalType, val: Val) -> Result<Global> {
         if !val.comes_from_same_store(store) {
             bail!("cross-`Store` globals are not supported");
@@ -442,6 +452,16 @@ impl Table {
     /// ```
     pub fn new(mut store: impl AsContextMut, ty: TableType, init: Val) -> Result<Table> {
         Table::_new(store.as_context_mut().0, ty, init)
+    }
+
+    /// Creates a fake [`Table`]. Used as a placeholder before
+    /// assigning an actual [`Table`], returned by [`Table::new`].
+    ///
+    /// # Examples
+    ///
+    /// TODO
+    pub fn placeholder() -> Table {
+        Table(Stored::null())
     }
 
     #[cfg_attr(nightlydoc, doc(cfg(feature = "async")))]

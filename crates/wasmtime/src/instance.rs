@@ -134,6 +134,12 @@ impl Instance {
         i.run(&mut store)
     }
 
+    /// Creates a fake [`Instance`]. Used as a placeholder before
+    /// assigning an actual [`Instance`], returned by [`Instance::new`].
+    pub fn placeholder() -> Instance {
+        Instance(Stored::null())
+    }
+
     /// Same as [`Instance::new`], except for usage in [asynchronous stores].
     ///
     /// For more details about this function see the documentation on

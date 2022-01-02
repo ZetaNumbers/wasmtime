@@ -230,6 +230,16 @@ impl Memory {
         Memory::_new(store.as_context_mut().0, ty)
     }
 
+    /// Creates a fake WebAssembly memory. Used as a placeholder before
+    /// assigning an actual WebAssembly memory, returned by [`Memory::new`].
+    ///
+    /// # Examples
+    ///
+    /// TODO
+    pub fn placeholder() -> Memory {
+        Memory(Stored::null())
+    }
+
     #[cfg_attr(nightlydoc, doc(cfg(feature = "async")))]
     /// Async variant of [`Memory::new`]. You must use this variant with
     /// [`Store`](`crate::Store`)s which have a
